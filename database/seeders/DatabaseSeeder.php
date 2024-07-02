@@ -24,9 +24,23 @@ class DatabaseSeeder extends Seeder
 
     public function runTenantSpecificSeeders(): void
     {
+
+        /**
+         *  This user will be called tenant1 or tenant2, and its purpose is to
+         *  able to prove that the on url tenant.localhost we se the tenant 1
+         *  database data, aka tenant 1 or tenant2.
+         */
         User::factory()->create([
             'name' => Tenant::current()->name,
             'email' => $this->getDbConnectionName() .  '@example.com',
+        ]);
+
+        User::factory()->create([
+            'name ' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name ' => 'userWithoutRoles',
         ]);
     }
 
