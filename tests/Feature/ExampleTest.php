@@ -15,17 +15,20 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-//        dd(Tenant::current());
         User::factory()->create(
             [
                 'name' => 'very_new_user',
             ]
         );
 
-
-            $response = $this->get('/');
-//        $response = $this->get('/tenant1.localhost/');
-//        $response = $this->get('/tenant1.localhost/andor');
+        /**
+         * We send request to regular, simple, non-tenant routes. Because
+         * we already set up who is the tenant in the TestCase.php.
+         * So, do not send request to 'tenant1.localhost/'. Send requests
+         * to '/'.
+         */
+//        $response = $this->get('/');
+        $response = $this->get('/andor');
 
         $response->assertStatus(200);
     }

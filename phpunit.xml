@@ -23,9 +23,6 @@
 <!--        This must be the landlord. This is the base. Because from landlord we decide which tenant will be tested-->
         <env name="DB_CONNECTION" value="landlord"/>
         <env name="DB_DATABASE" value="laravel"/>
-<!--        RUN TESTS IN TENANTS-->
-<!--        <env name="DB_CONNECTION" value="tenant"/>-->
-<!--        <env name="DB_DATABASE" value="testing"/>-->
 
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>

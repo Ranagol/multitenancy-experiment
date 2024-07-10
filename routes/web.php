@@ -8,12 +8,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route with the role middleware, temporarily commented out
+//Route::get(
+//    '/andor',
+//    function () {
+//        return User::first()?->toArray();
+//    }
+//)->middleware('role:admin');
+
+//Without the role middleware
 Route::get(
     '/andor',
     function () {
         return User::first()?->toArray();
     }
-)->middleware('role:admin');
+);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

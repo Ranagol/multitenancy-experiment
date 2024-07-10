@@ -11,9 +11,12 @@ use Spatie\Multitenancy\Models\Tenant;
 
 abstract class TestCase extends BaseTestCase
 {
-    use DatabaseTransactions;//this is is an alternative to RefreshDatabase
+    use DatabaseTransactions;//this is is a faster alternative to RefreshDatabase
     use UsesMultitenancyConfig;
 
+    /**
+     * This here is needed to the beginDatabaseTransaction() method to work
+     */
     protected function connectionsToTransact()
     {
         return [
@@ -26,14 +29,14 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        //Here we register an event listener
+        //Here we register an event listener, that listens for the ->makeCurrent() method
         Event::listen(MadeTenantCurrentEvent::class, function () {
-//            $this->beginDatabaseTransaction();//todo commented out, so I can see in which db is the user created. But this must be uncommented later!
+            //todo: commented out, so I can see in which db is the user created. But this must be uncommented later!
+            $this->beginDatabaseTransaction();
         });
 
-//        Tenant::first()->makeCurrent();
+        // I want to test happen in this tenant (which is my testing tenant)
         $testingTenant = Tenant::where('name', 'testing')->first();
         $testingTenant->makeCurrent();//Here we trigger the event
     }
-
 }
