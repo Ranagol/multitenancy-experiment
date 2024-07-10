@@ -10,6 +10,24 @@ use Tests\TestCase;
 class ExampleTest extends TestCase
 {
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        // I want to test happen in this tenant (which is my testing tenant)
+
+        $tenant = Tenant::insert(
+            [
+                'name' => 'testing',
+                'domain' => 'testing.localhost',
+                'database' => 'testing',
+            ]
+        );
+
+        $testingTenant = Tenant::where('name', 'testing')->first();
+        $testingTenant->makeCurrent();//Here we trigger the event
+
+    }
+
     /**
      * A basic test example.
      */

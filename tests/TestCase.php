@@ -4,6 +4,7 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Event;
 use Spatie\Multitenancy\Concerns\UsesMultitenancyConfig;
 use Spatie\Multitenancy\Events\MadeTenantCurrentEvent;
@@ -32,11 +33,22 @@ abstract class TestCase extends BaseTestCase
         //Here we register an event listener, that listens for the ->makeCurrent() method
         Event::listen(MadeTenantCurrentEvent::class, function () {
             //todo: commented out, so I can see in which db is the user created. But this must be uncommented later!
-            $this->beginDatabaseTransaction();
+//            $this->beginDatabaseTransaction();
         });
 
-        // I want to test happen in this tenant (which is my testing tenant)
-        $testingTenant = Tenant::where('name', 'testing')->first();
-        $testingTenant->makeCurrent();//Here we trigger the event
+
+
+        $this->setUpLandlord();
+        $this->setUpTenant();
+    }
+
+    private function setUpTenant(): void
+    {
+        Artisan::call('tenants:artisan "migrate --database=test_tenant"');
+    }
+
+    private function setUpLandlord(): void
+    {
+        Artisan::call('migrate --path=database/migrations/landlord --database=test_landlord');
     }
 }
