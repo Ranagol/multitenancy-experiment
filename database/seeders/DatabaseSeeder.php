@@ -35,41 +35,28 @@ class DatabaseSeeder extends Seeder
         $tenant = Tenant::first();
         $tenant->makeCurrent();
         $admin = User::where('name', 'admin')->first();//this is ok, we have the admin here
-        $admin->assignRole('admin');//add role to user
-
-
-
-//        dd(Auth::user());
-//        dd($tenant, $admin);
-//        Auth::login($admin);
-//        try {
-//            Auth::login($admin);
-//        } catch (\Exception $e) {
-//            dd($e);
-//        }
-//
-//        try {
-//            Auth::attempt([
-//                'email' => 'admin@gmail.com',
-//                'password' => 1234,
-//            ]);
-//            $request = request();
-//            $request->session()->regenerate();
-//        } catch (\Exception $e) {
-//            dd($e);
-//        }
-
-//
-//        dd(Auth::user());
-
-
-
-//        Auth::login(User::where('name', 'user')->first());
+        $admin->assignRole('admin');//add role to use
 
     }
 
     public function runLandlordSpecificSeeders(): void
     {
+        $this->seedMyTenants();
+    }
+
+    private function seedMyTenants()
+    {
+        Tenant::create([
+            'name' => 'tenant1',
+            'domain' => 'tenant1.localhost',
+            'database' => 'tenant1',
+        ]);
+
+        Tenant::create([
+            'name' => 'tenant2',
+            'domain' => 'tenant2.localhost',
+            'database' => 'tenant2',
+        ]);
 
     }
 

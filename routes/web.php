@@ -20,9 +20,11 @@ Route::get('/', function () {
 Route::get(
     '/andor',
     function () {
-//        return User::first()?->toArray();
-        xdebug_info();
-        exit;
+//       return User::first()?->toArray();
+
+        return 'Hello, World!';
+        // xdebug_info();
+        // exit;
     }
 );
 

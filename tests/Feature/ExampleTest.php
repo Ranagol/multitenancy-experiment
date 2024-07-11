@@ -2,30 +2,29 @@
 
 namespace Tests\Feature;
 
- use App\Models\User;
- use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Multitenancy\Models\Tenant;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Spatie\Multitenancy\Models\Tenant;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase
 {
+    use RefreshDatabase;
 
     public function setUp(): void
     {
         parent::setUp();
-        // I want to test happen in this tenant (which is my testing tenant)
-
-        $tenant = Tenant::insert(
+        Tenant::updateOrInsert(
             [
-                'name' => 'testing',
-                'domain' => 'testing.localhost',
-                'database' => 'testing',
+                'name' => 'test_tenant_1',
+                'domain' => 'tenant1.localhost',
+                'database' => 'test_tenant_1'
             ]
         );
-
-        $testingTenant = Tenant::where('name', 'testing')->first();
-        $testingTenant->makeCurrent();//Here we trigger the event
-
+        $tenant = Tenant::where('name', 'test_tenant_1')->firstOrFail();
+//        dd($tenant);
+        $tenant->makeCurrent();
     }
 
     /**
@@ -33,11 +32,12 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        User::factory()->create(
-            [
-                'name' => 'very_new_user',
-            ]
-        );
+
+//        User::factory()->create(
+//            [
+//                'name' => 'very_new_user',
+//            ]
+//        );
 
         /**
          * We send request to regular, simple, non-tenant routes. Because
